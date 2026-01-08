@@ -1,0 +1,131 @@
+name: Build and Release
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+jobs:
+  build:
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: macos-latest
+            args: --target aarch64-apple-darwin
+            name: macos-aarch64
+          - platform: macos-latest
+            args: --target x86_64-apple-darwin
+            name: macos-x86_64
+
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-apple-darwin,x86_64-apple-darwin
+
+      - name: Rust cache
+        uses: swatinem/rust-cache@v2
+
+      - name: Install frontend dependencies
+        run: pnpm install
+
+      - name: Install Tauri CLI
+        run: cargo install tauri-cli --version "^2.0" --locked
+
+      - name: Build CLI tools
+        shell: bash
+        run: |
+          if [[ "${{ matrix.args }}" == *"aarch64"* ]]; then
+            cargo tauri build --target aarch64-apple-darwin --no-bundle
+          else
+            cargo tauri build --target x86_64-apple-darwin --no-bundle
+          fi
+
+      - name: Create CLI package
+        shell: bash
+        run: |
+          mkdir -p cli-package
+          TAG_NAME="${{ github.ref_name }}"
+
+          if [[ "${{ matrix.args }}" == *"aarch64"* ]]; then
+            TARGET_DIR="target/aarch64-apple-darwin/release"
+          else
+            TARGET_DIR="target/x86_64-apple-darwin/release"
+          fi
+
+          # 复制 MCP server 二进制文件
+          cp "$TARGET_DIR/mcp-server" cli-package/whale-ask-server
+          cd cli-package
+          tar -czf ../whale-ask-server-${TAG_NAME}-${{ matrix.name }}.tar.gz *
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: whale-ask-server-${{ matrix.name }}
+          path: whale-ask-server-*.tar.gz
+          if-no-files-found: error
+
+  release:
+    name: Create Release
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            artifacts/*/whale-ask-server-*.tar.gz
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Trigger Homebrew Formula Update
+        if: success()
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          script: |
+            try {
+              await github.rest.actions.createWorkflowDispatch({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                workflow_id: 'update-homebrew.yml',
+                ref: 'main',
+                inputs: {
+                  tag_name: '${{ github.ref_name }}'
+                }
+              });
+              console.log('✅ Homebrew update workflow triggered');
+            } catch (error) {
+              console.error('❌ Failed to trigger Homebrew update:', error);
+            }
