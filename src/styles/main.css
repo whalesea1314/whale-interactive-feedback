@@ -1,0 +1,325 @@
+/* Apple 风格全局样式 + 6色主题系统 */
+/* Requirements: 10.1, 10.2 - 主题系统 CSS 变量定义 */
+
+/* ============================================================================
+   主题色系统 - 6种淡雅色卡
+   ============================================================================ */
+
+/* 主题1: 天空蓝 (默认) - Sky Blue */
+:root,
+.dark,
+.dark.theme-blue {
+  --theme-hue: 217;
+  --theme-color: #60A5FA;
+  --theme-color-light: rgba(96, 165, 250, 0.15);
+  --theme-color-hover: #93C5FD;
+  --theme-gradient: linear-gradient(135deg, #60A5FA 0%, #818CF8 100%);
+}
+
+/* 主题2: 薄荷绿 - Mint Green */
+.dark.theme-mint {
+  --theme-hue: 160;
+  --theme-color: #34D399;
+  --theme-color-light: rgba(52, 211, 153, 0.15);
+  --theme-color-hover: #6EE7B7;
+  --theme-gradient: linear-gradient(135deg, #34D399 0%, #2DD4BF 100%);
+}
+
+/* 主题3: 樱花粉 - Sakura Pink */
+.dark.theme-rose {
+  --theme-hue: 330;
+  --theme-color: #F472B6;
+  --theme-color-light: rgba(244, 114, 182, 0.15);
+  --theme-color-hover: #F9A8D4;
+  --theme-gradient: linear-gradient(135deg, #F472B6 0%, #E879F9 100%);
+}
+
+/* 主题4: 蜜桃橙 - Peach Orange */
+.dark.theme-peach {
+  --theme-hue: 25;
+  --theme-color: #FB923C;
+  --theme-color-light: rgba(251, 146, 60, 0.15);
+  --theme-color-hover: #FDBA74;
+  --theme-gradient: linear-gradient(135deg, #FB923C 0%, #FBBF24 100%);
+}
+
+/* 主题5: 薰衣紫 - Lavender Purple */
+.dark.theme-lavender {
+  --theme-hue: 258;
+  --theme-color: #A78BFA;
+  --theme-color-light: rgba(167, 139, 250, 0.15);
+  --theme-color-hover: #C4B5FD;
+  --theme-gradient: linear-gradient(135deg, #A78BFA 0%, #F472B6 100%);
+}
+
+/* 主题6: 石墨灰 - Slate Gray */
+.dark.theme-slate {
+  --theme-hue: 215;
+  --theme-color: #94A3B8;
+  --theme-color-light: rgba(148, 163, 184, 0.15);
+  --theme-color-hover: #CBD5E1;
+  --theme-gradient: linear-gradient(135deg, #94A3B8 0%, #64748B 100%);
+}
+
+/* 浅色主题色卡 */
+.light,
+.light.theme-blue {
+  --theme-hue: 217;
+  --theme-color: #3B82F6;
+  --theme-color-light: rgba(59, 130, 246, 0.12);
+  --theme-color-hover: #2563EB;
+  --theme-gradient: linear-gradient(135deg, #3B82F6 0%, #6366F1 100%);
+}
+
+.light.theme-mint {
+  --theme-hue: 160;
+  --theme-color: #10B981;
+  --theme-color-light: rgba(16, 185, 129, 0.12);
+  --theme-color-hover: #059669;
+  --theme-gradient: linear-gradient(135deg, #10B981 0%, #14B8A6 100%);
+}
+
+.light.theme-rose {
+  --theme-hue: 330;
+  --theme-color: #EC4899;
+  --theme-color-light: rgba(236, 72, 153, 0.12);
+  --theme-color-hover: #DB2777;
+  --theme-gradient: linear-gradient(135deg, #EC4899 0%, #D946EF 100%);
+}
+
+.light.theme-peach {
+  --theme-hue: 25;
+  --theme-color: #F97316;
+  --theme-color-light: rgba(249, 115, 22, 0.12);
+  --theme-color-hover: #EA580C;
+  --theme-gradient: linear-gradient(135deg, #F97316 0%, #EAB308 100%);
+}
+
+.light.theme-lavender {
+  --theme-hue: 258;
+  --theme-color: #8B5CF6;
+  --theme-color-light: rgba(139, 92, 246, 0.12);
+  --theme-color-hover: #7C3AED;
+  --theme-gradient: linear-gradient(135deg, #8B5CF6 0%, #EC4899 100%);
+}
+
+.light.theme-slate {
+  --theme-hue: 215;
+  --theme-color: #64748B;
+  --theme-color-light: rgba(100, 116, 139, 0.12);
+  --theme-color-hover: #475569;
+  --theme-gradient: linear-gradient(135deg, #64748B 0%, #475569 100%);
+}
+
+/* ============================================================================
+   深色主题基础变量
+   ============================================================================ */
+:root,
+.dark {
+  /* 背景色 - 柔和深色 */
+  --bg-primary: #1E1E22;
+  --bg-secondary: rgba(46, 46, 52, 0.85);
+  --bg-tertiary: rgba(62, 62, 70, 0.6);
+  --bg-input: rgba(46, 46, 52, 0.9);
+  --bg-hover: rgba(255, 255, 255, 0.06);
+  --bg-overlay: rgba(0, 0, 0, 0.6);
+  --bg-glass: rgba(36, 36, 42, 0.88);
+  --bg-card: rgba(46, 46, 52, 0.75);
+  
+  /* 文本色 */
+  --text-primary: rgba(255, 255, 255, 0.92);
+  --text-secondary: rgba(255, 255, 255, 0.65);
+  --text-muted: rgba(255, 255, 255, 0.38);
+  --text-inverse: #1E1E22;
+  
+  /* 边框色 */
+  --border-color: rgba(255, 255, 255, 0.12);
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --border-focus: var(--theme-color);
+  
+  /* 强调色 - 使用主题色 */
+  --accent-color: var(--theme-color);
+  --accent-hover: var(--theme-color-hover);
+  --accent-light: var(--theme-color-light);
+  --accent-gradient: var(--theme-gradient);
+  
+  /* 状态色 */
+  --success-color: #6BCB8B;
+  --success-light: rgba(107, 203, 139, 0.15);
+  --error-color: #E88B8B;
+  --error-light: rgba(232, 139, 139, 0.15);
+  --warning-color: #E8C86B;
+  --warning-light: rgba(232, 200, 107, 0.15);
+  
+  /* 阴影 - 柔和 */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.25);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.3);
+  --shadow-glow: 0 0 20px var(--theme-color-light);
+  --shadow-inset: inset 0 1px 2px rgba(0, 0, 0, 0.2);
+  
+  /* 按钮 */
+  --btn-primary-bg: var(--accent-gradient);
+  --btn-primary-hover: var(--theme-gradient);
+  --btn-secondary-bg: rgba(255, 255, 255, 0.08);
+  --btn-secondary-hover: rgba(255, 255, 255, 0.12);
+  
+  /* 输入框 */
+  --input-bg: rgba(46, 46, 52, 0.8);
+  --input-border: rgba(255, 255, 255, 0.1);
+  --input-focus-border: var(--accent-color);
+  --input-placeholder: rgba(255, 255, 255, 0.3);
+  
+  /* 滚动条 */
+  --scrollbar-track: transparent;
+  --scrollbar-thumb: rgba(255, 255, 255, 0.15);
+  --scrollbar-thumb-hover: rgba(255, 255, 255, 0.25);
+  
+  /* 毛玻璃效果 */
+  --blur-amount: 24px;
+  --backdrop-saturate: 180%;
+}
+
+/* ============================================================================
+   浅色主题基础变量
+   ============================================================================ */
+.light {
+  /* 背景色 */
+  --bg-primary: #F5F5F7;
+  --bg-secondary: rgba(255, 255, 255, 0.85);
+  --bg-tertiary: rgba(255, 255, 255, 0.6);
+  --bg-input: rgba(255, 255, 255, 0.95);
+  --bg-hover: rgba(0, 0, 0, 0.04);
+  --bg-overlay: rgba(0, 0, 0, 0.4);
+  --bg-glass: rgba(255, 255, 255, 0.88);
+  --bg-card: rgba(255, 255, 255, 0.8);
+  
+  /* 文本色 */
+  --text-primary: rgba(0, 0, 0, 0.88);
+  --text-secondary: rgba(0, 0, 0, 0.6);
+  --text-muted: rgba(0, 0, 0, 0.35);
+  --text-inverse: #ffffff;
+  
+  /* 边框色 */
+  --border-color: rgba(0, 0, 0, 0.1);
+  --border-subtle: rgba(0, 0, 0, 0.05);
+  --border-focus: var(--theme-color);
+  
+  /* 强调色 - 使用主题色 */
+  --accent-color: var(--theme-color);
+  --accent-hover: var(--theme-color-hover);
+  --accent-light: var(--theme-color-light);
+  --accent-gradient: var(--theme-gradient);
+  
+  /* 状态色 */
+  --success-color: #4CAF7A;
+  --success-light: rgba(76, 175, 122, 0.12);
+  --error-color: #D87070;
+  --error-light: rgba(216, 112, 112, 0.12);
+  --warning-color: #D8B850;
+  --warning-light: rgba(216, 184, 80, 0.12);
+  
+  /* 阴影 - 柔和 */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.12);
+  --shadow-glow: 0 0 20px var(--theme-color-light);
+  --shadow-inset: inset 0 1px 2px rgba(0, 0, 0, 0.04);
+  
+  /* 按钮 */
+  --btn-primary-bg: var(--accent-gradient);
+  --btn-primary-hover: var(--theme-gradient);
+  --btn-secondary-bg: rgba(0, 0, 0, 0.05);
+  --btn-secondary-hover: rgba(0, 0, 0, 0.08);
+  
+  /* 输入框 */
+  --input-bg: rgba(255, 255, 255, 0.9);
+  --input-border: rgba(0, 0, 0, 0.1);
+  --input-focus-border: var(--accent-color);
+  --input-placeholder: rgba(0, 0, 0, 0.3);
+  
+  /* 滚动条 */
+  --scrollbar-track: transparent;
+  --scrollbar-thumb: rgba(0, 0, 0, 0.12);
+  --scrollbar-thumb-hover: rgba(0, 0, 0, 0.2);
+  
+  /* 毛玻璃效果 */
+  --blur-amount: 24px;
+  --backdrop-saturate: 180%;
+}
+
+/* ============================================================================
+   全局基础样式
+   ============================================================================ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 滚动条样式 - 极简 */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+}
+
+/* 选中文本样式 */
+::selection {
+  background-color: var(--accent-color);
+  color: white;
+}
+
+/* 毛玻璃效果类 */
+.glass {
+  background: var(--bg-glass);
+  backdrop-filter: blur(var(--blur-amount)) saturate(var(--backdrop-saturate));
+  -webkit-backdrop-filter: blur(var(--blur-amount)) saturate(var(--backdrop-saturate));
+}
+
+/* 卡片样式 */
+.card {
+  background: var(--bg-card);
+  backdrop-filter: blur(var(--blur-amount)) saturate(var(--backdrop-saturate));
+  -webkit-backdrop-filter: blur(var(--blur-amount)) saturate(var(--backdrop-saturate));
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  box-shadow: var(--shadow-md);
+}
+
+/* 过渡动画 */
+.transition-all {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 聚焦环 */
+.focus-ring:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--accent-light), var(--shadow-sm);
+}

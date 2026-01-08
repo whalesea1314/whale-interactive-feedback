@@ -1,0 +1,63 @@
+[package]
+name = "whale-interactive-feedback"
+version = "1.0.0"
+description = "Whale Interactive Feedback - Tauri + Vue3 版本"
+authors = ["you"]
+edition = "2021"
+default-run = "app"
+
+[lib]
+name = "whale_interactive_feedback_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[[bin]]
+name = "app"
+path = "src/main.rs"
+
+[[bin]]
+name = "mcp-server"
+path = "src/bin/mcp_server.rs"
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+tauri-plugin-dialog = "2"
+tauri-plugin-fs = "2"
+tauri-plugin-shell = "2"
+tauri-plugin-os = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tokio = { version = "1", features = ["full"] }
+image = "0.25"
+base64 = "0.22"
+rodio = "0.19"
+dirs = "5"
+uuid = { version = "1", features = ["v4"] }
+chrono = { version = "0.4", features = ["serde"] }
+thiserror = "1"
+log = "0.4"
+env_logger = "0.11"
+# 截图功能 - Requirement 8.4
+xcap = "0.8"
+# MCP 协议
+rmcp = { version = "0.12", features = ["server", "transport-io"] }
+schemars = "0.8"
+anyhow = "1"
+tauri-plugin-screenshots = "2.2.0"
+# LLM API 调用
+reqwest = { version = "0.12", features = ["json", "rustls-tls"] }
+
+# macOS 窗口激活
+[target.'cfg(target_os = "macos")'.dependencies]
+cocoa = "0.26"
+objc = "0.2"
+
+[dev-dependencies]
+proptest = "1"
+tempfile = "3"
+
+[features]
+default = ["custom-protocol"]
+custom-protocol = ["tauri/custom-protocol"]
