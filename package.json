@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Whale Interactive Feedback - Tauri + Vue3 版本",
   "type": "module",
+  "packageManager": "pnpm@9.15.0",
   "scripts": {
     "dev": "vite",
     "build": "node scripts/update-title.js && vue-tsc --noEmit && vite build",
