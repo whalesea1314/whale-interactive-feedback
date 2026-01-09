@@ -69,6 +69,8 @@ jobs:
 
           # 复制 MCP server 二进制文件
           cp "$TARGET_DIR/mcp-server" cli-package/whale-ask-server
+          # 复制 UI 应用二进制文件
+          cp "$TARGET_DIR/app" cli-package/app
           cd cli-package
           tar -czf ../whale-ask-server-${TAG_NAME}-${{ matrix.name }}.tar.gz *
 
