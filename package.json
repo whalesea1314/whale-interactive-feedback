@@ -1,6 +1,6 @@
 {
   "name": "whale-interactive-feedback",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Whale Interactive Feedback - Tauri + Vue3 版本",
   "type": "module",
   "packageManager": "pnpm@9.15.0",
